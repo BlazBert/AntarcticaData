@@ -1,0 +1,66 @@
+# Known port stops on the Trieste -> Antarctica -> Trieste cruise.
+# Used by analysis/trajectory.py to detect "at_port" intervals.
+# Format: name, lat, lon, radius_km (search radius), notes.
+# TBD: confirm with vessel logbook.
+
+ports:
+  - name: "Trieste"
+    lat: 45.6133
+    lon: 13.8090
+    radius_km: 5.0
+    notes: "Departure / return port"
+  - name: "Punta Arenas"
+    lat: -53.1638
+    lon: -70.9171
+    radius_km: 10.0
+    notes: "Common Antarctic gateway"
+  - name: "Ushuaia"
+    lat: -54.8019
+    lon: -68.3030
+    radius_km: 10.0
+    notes: "Common Antarctic gateway"
+  - name: "Mar del Plata"
+    lat: -38.0023
+    lon: -57.5575
+    radius_km: 10.0
+    notes: "South-Atlantic stop"
+  - name: "Cape Town"
+    lat: -33.9180
+    lon: 18.4233
+    radius_km: 10.0
+    notes: "Common Antarctic gateway"
+  - name: "King George Island (Frei)"
+    lat: -62.2014
+    lon: -58.9619
+    radius_km: 5.0
+    notes: "Antarctic Peninsula research station hub"
+  - name: "Mario Zucchelli (Terra Nova Bay)"
+    lat: -74.6906
+    lon: 164.1144
+    radius_km: 5.0
+    notes: "Italian Antarctic station (Ross Sea)"
+  - name: "Lyttelton (NZ)"
+    lat: -43.6062
+    lon: 172.7164
+    radius_km: 5.0
+    notes: "Antarctic-staging port (Pacific approach + return)"
+  - name: "Wellington (NZ)"
+    lat: -41.2865
+    lon: 174.7762
+    radius_km: 5.0
+    notes: "Alternate NZ staging port"
+  - name: "Panama Canal - Balboa"
+    lat: 8.96
+    lon: -79.55
+    radius_km: 8.0
+    notes: "Canal-transit anchorage on the Pacific side"
+  - name: "Panama Canal - Cristobal"
+    lat: 9.36
+    lon: -79.92
+    radius_km: 8.0
+    notes: "Canal-transit anchorage on the Atlantic side"
+
+# Detection thresholds
+detect:
+  speed_threshold_m_s: 0.2
+  min_dwell_minutes: 30

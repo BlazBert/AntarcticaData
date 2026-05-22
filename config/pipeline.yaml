@@ -1,0 +1,65 @@
+# Pipeline configuration. Paths are relative to code/ unless absolute.
+
+paths:
+  # Source UBX directory (one .ubx per day, named YYYYMMDD.ubx)
+  ubx_dir: "../antarctica2026/data"
+  # All derived artefacts go under work_dir/
+  work_dir: "../work"
+  staging: "../work/staging"      # per-day Parquet + Zarr append targets
+  derived: "../work/derived"      # cross-day analysis outputs (NetCDF, Parquet, GeoJSON)
+  figures: "../work/figures"
+  tables: "../work/tables"
+  rinex: "../work/rinex"
+  ppp: "../work/ppp"
+  logs: "../work/logs"
+  spectrum_zarr: "../work/derived/mon_span.zarr"
+
+parser:
+  # Map of UBX class/id pairs we recognise.
+  # Class hex -> {id hex -> message name}
+  recognised:
+    "0x01":
+      "0x07": NAV_PVT
+      "0x14": NAV_HPPOSLLH
+      "0x35": NAV_SAT
+    "0x02":
+      "0x13": RXM_SFRBX
+      "0x14": RXM_MEASX
+      "0x15": RXM_RAWX
+    "0x0A":
+      "0x31": MON_SPAN
+      "0x38": MON_RF
+      "0x39": MON_SYS
+  # Whether to write a "_unknown" parquet for unrecognised messages.
+  log_unknown: true
+
+parallel:
+  # multiprocessing.Pool worker count. Cap at 32 — see plan rationale.
+  workers: 32
+  maxtasksperchild: 4
+  # chunksize for imap_unordered
+  chunksize: 1
+
+writers:
+  parquet:
+    compression: "zstd"
+    compression_level: 3
+    row_group_target_bytes: 134217728   # 128 MiB
+  zarr:
+    chunk_time: 3600                    # one hour per chunk
+    codec: "blosc:zstd"
+    codec_level: 3
+    shuffle: "bit"
+
+analysis:
+  # Sea-state / antenna heave PSD band (Hz)
+  heave_band_hz: [0.04, 0.20]
+  # ROTI window (seconds)
+  roti_window_s: 300
+  # σ_φ window (seconds)  (carrier-phase scintillation proxy)
+  sigma_phi_window_s: 60
+  # Ionospheric thin-shell height (km) for vertical TEC mapping
+  iono_shell_km: 350
+  # Cycle-slip detection: fall in trkStat & 0x02 between consecutive epochs
+  cycle_slip_mask: 0x02
+  # Multipath M1/M2 — Estey & Meertens linear combinations (alpha = (f1/f2)^2)

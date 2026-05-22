@@ -1,0 +1,25 @@
+# ESSD-friendly matplotlib defaults.
+# Use via: import matplotlib as mpl; mpl.style.use("figures/style.mplstyle")
+
+font.family: serif
+font.serif: DejaVu Serif, Times New Roman, Times
+font.size: 9
+axes.titlesize: 10
+axes.labelsize: 9
+legend.fontsize: 8
+xtick.labelsize: 8
+ytick.labelsize: 8
+
+axes.linewidth: 0.8
+axes.grid: True
+grid.color: 0.85
+grid.linewidth: 0.5
+
+savefig.dpi: 300
+savefig.bbox: tight
+figure.dpi: 110
+
+lines.linewidth: 1.0
+lines.markersize: 3
+
+legend.frameon: False
