@@ -1,8 +1,8 @@
 """Emit ready-to-paste LaTeX snippets for the remaining `[TBD]` slots.
 
-Run once on the server after the analysis pipeline + the corrected
-``analysis.anomalies`` (L1/L2L5 split) + ``verify.track_outliers`` are
-all up to date. Prints, in order:
+Requires the analysis pipeline + the corrected ``analysis.anomalies``
+(L1/L2L5 split) + ``verify.track_outliers`` to all be up to date.
+Prints, in order:
 
   1. Two Spearman correlations for §5.5 (L2/L5 baseline vs |lat| and vs
      receiver temperature).
@@ -14,10 +14,8 @@ Just paste each section into the corresponding ``[TBD]`` slot in
 
 CLI::
 
-    cd /home/jovyan/Projects/gps-data/data/code
     python -m verify.finish_paper
-    python -m verify.finish_paper > /tmp/paper_snippets.tex     # if you'd
-                                                                 # rather pipe
+    python -m verify.finish_paper > /tmp/paper_snippets.tex   # or pipe
 """
 
 from __future__ import annotations

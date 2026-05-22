@@ -15,8 +15,6 @@ Output:
 
 Usage::
 
-    cd /home/jovyan/Projects/gps-data/data/code
-
     # Default: use the port coordinates from config/ports.yaml
     python -m verify.igs_compare
 

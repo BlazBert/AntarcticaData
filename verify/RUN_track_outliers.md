@@ -17,7 +17,6 @@ python -m analysis.qc_summary                      # → tables/T4_daily_stats.p
 ## Run
 
 ```
-cd /home/jovyan/Projects/gps-data/data/code
 python -m verify.track_outliers
 ```
 

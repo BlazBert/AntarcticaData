@@ -1,8 +1,7 @@
 """Track-quality diagnostic.
 
-Run on the server:
+Usage::
 
-    cd /home/jovyan/Projects/gps-data/data/code
     python -m verify.diagnose_track --day 20250930
     python -m verify.diagnose_track --day 20260127  # Antarctic
     python -m verify.diagnose_track                 # all staged days, summary table

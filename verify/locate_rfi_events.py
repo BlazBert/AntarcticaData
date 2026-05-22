@@ -1,12 +1,10 @@
 """Map strong-jamming days to ship positions.
 
-Run on the server after the analysis pipeline has produced
+Requires the analysis pipeline to have produced
 ``derived/track/<day>.track.parquet`` and ``staging/<day>/mon_rf.parquet``
 files.
 
 Usage::
-
-    cd /home/jovyan/Projects/gps-data/data/code
 
     # Built-in list of strong-jamming days from the cross-day summary:
     python -m verify.locate_rfi_events
