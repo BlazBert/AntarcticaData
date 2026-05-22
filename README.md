@@ -152,13 +152,6 @@ round-trip and schema-invariant tests. Larger validation scripts
 `verify/track_outliers.py`) need the full Parquet/Zarr outputs and
 are not part of the default `pytest` run.
 
-## Citation
-
-> Bertalanic, B. (2026). *R/V Laura Bassi shipborne GNSS dataset,
-> Trieste–Antarctica–Trieste (2025-09-26 to 2026-04-29) — raw UBX +
-> RINEX 3.04*. Zenodo. DOI: **pending**.
-
-The accompanying ESSD paper DOI will be added on acceptance.
 
 ## References
 
@@ -175,7 +168,15 @@ Methods and external tools used by the pipeline:
   *TEQC: The Multi-Purpose Toolkit for GPS/GLONASS Data.* GPS Solutions 3:42–49 (1999).
 - **IGS final products** — Johnston G., Riddell A., Hausler G. *The International
   GNSS Service.* In: *Springer Handbook of Global Navigation Satellite Systems*
-  (2017), pp. 967–982. Distributed via NASA CDDIS: <https://cddis.nasa.gov>
+  (2017), pp. 967–982. Distributed via NASA CDDIS: <https://www.earthdata.nasa.gov/centers/cddis-daac>
+
+## Citation
+
+> Bertalanic, B. (2026). *R/V Laura Bassi shipborne GNSS dataset,
+> Trieste–Antarctica–Trieste (2025-09-26 to 2026-04-29) — raw UBX +
+> RINEX 3.04*. Zenodo. DOI: **pending**.
+
+The accompanying ESSD paper DOI will be added on acceptance.
 
 ## License
 
