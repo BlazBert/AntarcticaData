@@ -36,9 +36,37 @@ python -m venv .venv && source .venv/bin/activate
 pip install -e .
 ```
 
-External binaries (only needed for the RINEX/PPP stages):
-- `convbin` from [RTKLIB demo5](https://github.com/rtklibexplorer/RTKLIB) (vanilla RTKLIB has F9P signal-mapping bugs)
-- `pdp3` from [PRIDE PPP-AR](https://github.com/PrideLab/PRIDE-PPPAR)
+### External binaries
+
+Only needed for the RINEX (`rinex_all`) and PPP (`ppp_all`) Snakemake targets;
+the core parse + analysis + figures path runs with Python alone.
+
+| Tool | Used for | Source | Notes |
+|---|---|---|---|
+| `convbin` | UBX → RINEX 3.04 (`rinex/convbin_runner.py`) | [RTKLIB demo5 fork (rtklibexplorer)](https://github.com/rtklibexplorer/RTKLIB) | Vanilla RTKLIB has F9P signal-mapping bugs (B2a misrouted as B2I, etc.). Build the demo5 fork from source — no binary release. |
+| `pdp3` | Kinematic PPP-AR (`ppp/pride_runner.py`) | [PRIDE PPP-AR](https://github.com/PrideLab/PRIDE-PPPAR) ([Geng et al., 2019](https://doi.org/10.1007/s10291-019-0888-1)) | Fortran package; build via the upstream `install.sh`. Tested against PRIDE PPP-AR ≥ 3.0. |
+
+Both must be on `PATH`. Quick check:
+
+```sh
+which convbin pdp3
+convbin -?         # should print the RTKLIB demo5 usage banner
+pdp3 -h            # should print the PRIDE PPP-AR usage banner
+```
+
+#### IGS products + CDDIS authentication
+
+`ppp/igs_products.py` downloads per-day IGS final products (SP3, CLK, OSB/BIA,
+IONEX, EOP, ATX) from [NASA CDDIS](https://cddis.nasa.gov/archive/gnss/products/).
+CDDIS requires a free [NASA Earthdata](https://urs.earthdata.nasa.gov) account
+since 2020. Configure once via `~/.netrc`:
+
+```
+machine urs.earthdata.nasa.gov login YOUR_USER password YOUR_PASSWORD
+```
+
+(`chmod 600 ~/.netrc`). Alternative analysis centres — WUM, COD, ESA, GFZ — can
+be selected via the `IGS_AC` constant in `ppp/igs_products.py`.
 
 ## Configure
 
@@ -52,6 +80,11 @@ paths:
 
 `config/receiver.yaml` describes the receiver/antenna setup;
 `config/ports.yaml` lists known port stops (used for berth-repeatability QC).
+
+### Data access
+
+The 216 daily `.ubx` files (~180 GB) are archived on Zenodo (DOI: *pending*) —
+download them and point `paths.ubx_dir` at the unpacked directory.
 
 ## Quickstart — single day
 
@@ -89,7 +122,7 @@ complete a single-day run end-to-end in a few minutes.
 2. **analysis** — trajectory · QC · multipath (M1/M2, Estey & Meertens) · RF spectrum + RFI · TEC (validation) · scintillation σ_φ proxy.
 3. **figures + tables** — ESSD-ready PDFs + T1..T5.
 4. **PPP** — kinematic PRIDE PPP-AR per day, compared against onboard `nav_hpposllh`.
-5. **RINEX** — `convbin` (RTKLIB demo5) → Hatanaka `.crx.gz`, for Zenodo archival.
+5. **RINEX** — `convbin` (RTKLIB demo5) → `obs.rnx` + `nav.rnx` (RINEX 3.04).
 
 ## Recorded UBX messages
 
@@ -126,6 +159,23 @@ are not part of the default `pytest` run.
 > RINEX 3.04*. Zenodo. DOI: **pending**.
 
 The accompanying ESSD paper DOI will be added on acceptance.
+
+## References
+
+Methods and external tools used by the pipeline:
+
+- **RTKLIB demo5** — Everett, T. (rtklibexplorer fork). RINEX conversion (`convbin`).
+  <https://github.com/rtklibexplorer/RTKLIB>
+- **PRIDE PPP-AR** — Geng J., Chen X., Pan Y., Mao S., Li C., Zhou J., Zhang K.
+  *PRIDE PPP-AR: an open-source software for GNSS PPP ambiguity resolution.*
+  GPS Solutions 23:91 (2019). <https://doi.org/10.1007/s10291-019-0888-1>
+- **u-blox ZED-F9P interface description** — u-blox AG, *ZED-F9P-15B Data Sheet
+  (UBX-22021920)* and *u-blox F9 HPG 1.40 Interface Description*.
+- **Code multipath M1/M2** — Estey, L.H. & Meertens, C.M.
+  *TEQC: The Multi-Purpose Toolkit for GPS/GLONASS Data.* GPS Solutions 3:42–49 (1999).
+- **IGS final products** — Johnston G., Riddell A., Hausler G. *The International
+  GNSS Service.* In: *Springer Handbook of Global Navigation Satellite Systems*
+  (2017), pp. 967–982. Distributed via NASA CDDIS: <https://cddis.nasa.gov>
 
 ## License
 
